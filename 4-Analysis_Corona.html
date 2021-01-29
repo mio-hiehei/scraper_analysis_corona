@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Mio Hienstorfer-Heitmann" />
+
+
+<title>Analysing legislative behaviour before and after March 2020</title>
+
+<script src="4-Analysis_Corona_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="4-Analysis_Corona_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="4-Analysis_Corona_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="4-Analysis_Corona_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="4-Analysis_Corona_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="4-Analysis_Corona_files/navigation-1.1/tabsets.js"></script>
+<link href="4-Analysis_Corona_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="4-Analysis_Corona_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="4-Analysis_Corona_files/table1-1.0/table1_defaults.css" rel="stylesheet" />
+<script src="4-Analysis_Corona_files/kePrint-0.0.1/kePrint.js"></script>
+<link href="4-Analysis_Corona_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Analysing legislative behaviour before and after March 2020</h1>
+<h4 class="author">Mio Hienstorfer-Heitmann</h4>
+<h4 class="date">29 1 2021</h4>
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In the following, I will conduct a short analysis of Bundetags-votes by opposition parties in the 19th legislative period between 2018 and the autumn of 2020.</p>
+<div class="Rtable1"><table class="Rtable1">
+<thead>
+<tr>
+<th class="grouplabel"></th>
+<th colspan="2" class="grouplabel"><div>AfD</div></th>
+<th colspan="2" class="grouplabel"><div>DIE GRÜNEN</div></th>
+<th colspan="2" class="grouplabel"><div>DIE LINKE</div></th>
+<th colspan="2" class="grouplabel"><div>FDP</div></th>
+<th colspan="2" class="grouplabel"><div>Overall</div></th>
+</tr>
+<tr>
+<th class='rowlabel firstrow lastrow'></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Post Corona<br><span class='stratn'>(N=13)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Pre Corona<br><span class='stratn'>(N=63)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Post Corona<br><span class='stratn'>(N=12)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Pre Corona<br><span class='stratn'>(N=59)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Post Corona<br><span class='stratn'>(N=14)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Pre Corona<br><span class='stratn'>(N=62)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Post Corona<br><span class='stratn'>(N=13)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Pre Corona<br><span class='stratn'>(N=63)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Post Corona<br><span class='stratn'>(N=52)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Pre Corona<br><span class='stratn'>(N=247)</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Relative Seat share</span></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>0.133 (0)</td>
+<td>0.133 (0)</td>
+<td>0.0945 (0)</td>
+<td>0.0945 (0)</td>
+<td>0.0973 (0)</td>
+<td>0.0973 (0)</td>
+<td>0.113 (0)</td>
+<td>0.113 (0)</td>
+<td>0.109 (0.0152)</td>
+<td>0.110 (0.0152)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>0.133 [0.133, 0.133]</td>
+<td class='lastrow'>0.133 [0.133, 0.133]</td>
+<td class='lastrow'>0.0945 [0.0945, 0.0945]</td>
+<td class='lastrow'>0.0945 [0.0945, 0.0945]</td>
+<td class='lastrow'>0.0973 [0.0973, 0.0973]</td>
+<td class='lastrow'>0.0973 [0.0973, 0.0973]</td>
+<td class='lastrow'>0.113 [0.113, 0.113]</td>
+<td class='lastrow'>0.113 [0.113, 0.113]</td>
+<td class='lastrow'>0.105 [0.0945, 0.133]</td>
+<td class='lastrow'>0.113 [0.0945, 0.133]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Distance to Government</span></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>26.8 (0)</td>
+<td>26.8 (0)</td>
+<td>11.7 (0)</td>
+<td>11.7 (0)</td>
+<td>32.6 (0)</td>
+<td>32.6 (0)</td>
+<td>9.92 (0)</td>
+<td>9.92 (0)</td>
+<td>20.6 (9.83)</td>
+<td>20.3 (9.69)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>26.8 [26.8, 26.8]</td>
+<td class='lastrow'>26.8 [26.8, 26.8]</td>
+<td class='lastrow'>11.7 [11.7, 11.7]</td>
+<td class='lastrow'>11.7 [11.7, 11.7]</td>
+<td class='lastrow'>32.6 [32.6, 32.6]</td>
+<td class='lastrow'>32.6 [32.6, 32.6]</td>
+<td class='lastrow'>9.92 [9.92, 9.92]</td>
+<td class='lastrow'>9.92 [9.92, 9.92]</td>
+<td class='lastrow'>26.8 [9.92, 32.6]</td>
+<td class='lastrow'>26.8 [9.92, 32.6]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Days until next election</span></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>477 (60.3)</td>
+<td>1010 (238)</td>
+<td>475 (61.4)</td>
+<td>1010 (238)</td>
+<td>482 (61.1)</td>
+<td>1020 (237)</td>
+<td>476 (58.9)</td>
+<td>1010 (239)</td>
+<td>477 (58.7)</td>
+<td>1010 (237)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>485 [353, 562]</td>
+<td class='lastrow'>982 [605, 1380]</td>
+<td class='lastrow'>485 [353, 562]</td>
+<td class='lastrow'>982 [605, 1380]</td>
+<td class='lastrow'>486 [353, 562]</td>
+<td class='lastrow'>1010 [605, 1380]</td>
+<td class='lastrow'>485 [353, 562]</td>
+<td class='lastrow'>948 [605, 1380]</td>
+<td class='lastrow'>485 [353, 562]</td>
+<td class='lastrow'>982 [605, 1380]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The above table shows descriptive statistics for all of the variables in my model. The main explanatory factor to explain differences in opposition voting behaviour is a dummy indicating the time before (0) and after (1) the onset of the Corona pandemic in Germany in march 2020. I further include the relative seat share of a party into the model, as well as its ideological distance to the SPD-CDU/CSU led coalition as measured by the CMP-data. I further include the days until the next election in autumn of 2021, indicating that the closer an election, the more confronting opposition parties are likely to be in parliament. As already becomes appearent, the number of roll call votes in the Bundestag after March 2020 is fairly limited. We should thus not expect to observe significant differences in behaviour before and after Corona.</p>
+</div>
+<div id="model-choice" class="section level2">
+<h2>Model choice</h2>
+<p>When analysing the effects of party- as well as vote-specific characteristics on an outcome variable, one promising approach would be to apply a multilevel model with random intercepts and/or slopes on the vote- as well as the party level. On the other hand, such models have the tendency to overfit, further they are not easily interpreted and may not converge with an N too small. That is why I will apply a logistic regression model as:</p>
+<p><span class="math display">\[P(Vote = 1 | X = X_i ) = P(Vote = 1) = \frac{1}{1 + exp(-x_i\beta)}\]</span></p>
+<p>whereas my systematic component <span class="math inline">\(x_i\beta\)</span> is:</p>
+<p><span class="math display">\[X_i\beta = (x_1\beta_{Corona},x_2\beta_{DaysNextElection},x_3\beta_{LeftRightDistance},x_4\beta_{RelSeatShare},x_5\beta_{AfD})\]</span></p>
+<p>I thus expect the likelihood to vote in line with the government coalition in Germany is a function of whether the vote happend before or after Corona, the distance to the next election, the distance of a party to the coalition in ideological terms and the relative seat share of a party. I further include the AfD as a control since it is a party with unsual legislative behaviour as a populist and I thus want to account for the possibility that the AfD may yield patterns of behaviour that are otherwise left unexplained by the model.</p>
+<p>I apply a BFGS-hill-climbing algorithm to estimate the maximum likelihood of observing a positive vote by an opposition party given the systematic component <span class="math inline">\(X_i\beta\)</span>.</p>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>The following table presents the results of the regression analysis.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ML Estimates
+</th>
+<th style="text-align:right;">
+ML SE
+</th>
+<th style="text-align:right;">
+Pr(&gt;|t|)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Intercept
+</td>
+<td style="text-align:right;">
+0.927
+</td>
+<td style="text-align:right;">
+2.234
+</td>
+<td style="text-align:right;">
+0.678
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corona
+</td>
+<td style="text-align:right;">
+0.562
+</td>
+<td style="text-align:right;">
+0.854
+</td>
+<td style="text-align:right;">
+0.511
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Days_next_ele
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.318
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rel_Seats
+</td>
+<td style="text-align:right;">
+0.185
+</td>
+<td style="text-align:right;">
+19.701
+</td>
+<td style="text-align:right;">
+0.993
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rile_Dist
+</td>
+<td style="text-align:right;">
+-0.117
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AfD
+</td>
+<td style="text-align:right;">
+0.286
+</td>
+<td style="text-align:right;">
+0.813
+</td>
+<td style="text-align:right;">
+0.725
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rile_DistCorona
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+0.043
+</td>
+<td style="text-align:right;">
+0.763
+</td>
+</tr>
+</tbody>
+</table>
+<p>First it is apparent that none of the coefficient except for the ideological difference of a party to the coalition yields significant effects. It is unsurprisingly shown that increasing distance to the government decreases the probability to vote with the government in a roll call vote. Regarding the Corona-pandemic, we observe a positive effect for our sample that remains insignificant.</p>
+<div id="simulation" class="section level3">
+<h3>Simulation</h3>
+<p>In the following I will simulate the effect of the Corona pandemic on legislative behaviour. I will further examine whether that behaviour was different for parties with different ideological positions. That is: did parties behave differently after Corona depending on their ideological distance to the coalition?</p>
+<p><img src="4-Analysis_Corona_files/figure-html/simulation-1.png" width="672" /></p>
+</div>
+<div id="limitations" class="section level3">
+<h3>Limitations</h3>
+<p>It would make more sense to write a multilevel model to account for variations between the party- and the vote level. Maybe effects are different across parties (would take away entire variation in seatshare and distance to gov). On the vote level, we would have variations in the days until the next election.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "4-Analysis_Corona_files/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
