@@ -3,6 +3,7 @@ library(lubridate)
 library(texreg)
 library(optimx)
 library(MASS)
+library(MESS)
 library(rstudioapi)
 
 wd <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -11,6 +12,7 @@ setwd(wd)
 
 df <- read_csv2("Dataframe_opp_corona.csv")
 
+# We also want to analyse whether the effect changed over the course of the pandemic
 
 df_opposition <- df %>% 
   filter(Opposition == 1) %>%
@@ -39,10 +41,21 @@ ll_logit <- function(theta, y, X) {
 
 
 logit_df <- df_opposition %>%
+<<<<<<< Updated upstream
   dplyr::select("Party_yes", "Corona","Days_next_ele", "Rel_Seats", "Rile_Dist", "AfD") %>%
   mutate(Rile_DistCorona = Corona * Rile_Dist) %>%
   na.omit
+=======
+  dplyr::select("Party_yes","Health", "Corona","Days_next_ele", "Rel_Seats", "Rile_Dist", "AfD","Corona_dur") %>%
+  na.omit %>%
+  mutate(CoronaCorona_dur = Corona_dur * Corona)
+>>>>>>> Stashed changes
 X <- as.matrix(cbind(1,logit_df[,2:ncol(logit_df)]))
+
+# Testing for pairwise correlation
+
+cor(X)
+
 
 y <- logit_df[,1]
 
@@ -148,7 +161,11 @@ sim_function <-
   }
 
 
+<<<<<<< Updated upstream
 ### calculate:how did Corona crisis affect opposition work? Also: 
+=======
+### calculate:how did Corona crisis affect opposition work? Did this effect change over the course of the pandemic?
+>>>>>>> Stashed changes
 
 # logit response function
 response_function <- function(x) {
@@ -169,18 +186,32 @@ vcov <- solve(-res$hessian[(1:ncol(X)), (1:ncol(X))])
 scenarios_corona <- c(0,1)
 scenarios_distance <- sort(unique(df_opposition$Rile_Dist))
 
+<<<<<<< Updated upstream
 
 cases <- array(NA, c(dim(X), # 1 & 2
                      length(scenarios_corona), # 3
                      length(scenarios_distance))) # 4
+=======
+scenarios_duration <- seq(min(logit_df$Corona_dur),max(logit_df$Corona_dur),by = 1)
+
+cases <- array(NA, c(dim(X), # 1 & 2
+                     length(scenarios_corona), # 3
+                     length(scenarios_duration))) # 4
+>>>>>>> Stashed changes
 
 cases[, , ,] <- X
 
 # scenarios
 for(i in 1:length(scenarios_corona)){
+<<<<<<< Updated upstream
   for(j in 1:length(scenarios_distance)){
     cases[,which(colnames(X) == "Corona"),i,] <- scenarios_corona[i]
     cases[,which(colnames(X) == "Rile_Dist"),,j] <- scenarios_distance[j]
+=======
+  for(j in 1:length(scenarios_duration)){
+    cases[,which(colnames(X) == "Corona"),i,] <- scenarios_corona[i]
+    cases[,which(colnames(X) == "Corona_dur"),,j] <- scenarios_duration[j]
+>>>>>>> Stashed changes
     
     
   }
@@ -189,6 +220,7 @@ for(i in 1:length(scenarios_corona)){
 # interaction
 
 for(i in 1:length(scenarios_corona)){
+<<<<<<< Updated upstream
   for(j in 1:length(scenarios_distance)){
   cases[,which(colnames(X) == "Rile_DistCorona"),i,] <- cases[,which(colnames(X) == "Rile_Dist"),i,] * scenarios_corona[i]
   cases[,which(colnames(X) == "Rile_DistCorona"),,j] <- cases[,which(colnames(X) == "Corona"),,j] * scenarios_distance[j]
@@ -204,10 +236,25 @@ df5 <- cases[,,2,1] # Corona closest ideology
 df6 <- cases[,,2,2] # Corona second-closests ideologcy
 df7 <- cases[,,2,3] # Corona third-closest ideology
 df8 <- cases[,,2,4] # Corona furthest away ideology
+=======
+  for(j in 1:length(scenarios_duration)){
+  cases[,which(colnames(X) == "CoronaCorona_dur"),i,] <- cases[,which(colnames(X) == "Corona_dur"),i,] * scenarios_corona[i]
+  cases[,which(colnames(X) == "CoronaCorona_dur"),,j] <- cases[,which(colnames(X) == "Corona"),,j] * scenarios_health[j]
+  }
+}
+
+# df1 <- cases[,,1,1] # No corona and no health
+# df2 <- cases[,,1,2] # No corona but health
+# df3 <- cases[,,2,1] # Corona but no Health
+# df4 <- cases[,,2,2] # COrona and health
+
+ev_corona <- matrix(NA, nrow = 1000, ncol = length(scenarios_corona)+length(scenarios_duration))
+>>>>>>> Stashed changes
 
 ev_corona <- matrix(NA, nrow = 1000, ncol = length(scenarios_corona)*length(scenarios_distance))
 
 for(i in 1:length(scenarios_corona)){
+<<<<<<< Updated upstream
   for(j in 1:length(scenarios_distance)) {
     if(i == 1){
       ev_corona[,i*j] <- sim_function(
@@ -228,6 +275,27 @@ for(i in 1:length(scenarios_corona)){
           predicted_values = F
         )$ev
       }
+=======
+  ev_corona[,i] <- sim_function(
+    coefs = coefs,
+    vcov = vcov,
+    response_function = response_function,
+    stochastic_component = stochastic_component,
+    scenario = cases[,,i,j],
+    predicted_values = F
+  )$ev
+  for(j in 1:length(scenarios_duration)) {
+    ev_corona[,i+j] <- sim_function(
+      coefs = coefs,
+      vcov = vcov,
+      response_function = response_function,
+      stochastic_component = stochastic_component,
+      scenario = cases[,,i,j],
+      predicted_values = F
+    )$ev
+    
+    cat("Round",j,i)
+>>>>>>> Stashed changes
   }
 }
 
@@ -241,6 +309,7 @@ df_corona <- data.frame(
   mean = ev_corona_mean,
   lower = ev_corona_ci[,1],
   upper = ev_corona_ci[,2],
+<<<<<<< Updated upstream
   scenario = c(paste0("Pre Corona_",sort(unique(df_opposition$Rile_Dist))),
                paste0("Post Corona_",sort(unique(df_opposition$Rile_Dist))))
 )
@@ -261,3 +330,73 @@ ggplot(data = df_corona, aes(x = Rile_Dist, color = Corona))+
   ylab("P(Voting with Gov.)")+
   xlab("Left-Right Distance to Coalition")+
   theme_bw()
+=======
+  duration = scenarios_duration)
+
+ggplot(data = df_corona)+
+  geom_errorbar(aes(x = scenarios_duration, y = mean, ymin = lower, ymax = upper))
+
+
+
+# Do the same stuff but only corona: two scenarios
+
+
+
+scenarios_corona <- c(0,1)
+
+cases <- array(NA, c(dim(X), # 1 & 2
+                     length(scenarios_corona))) # 4
+
+cases[, , ] <- X
+
+# scenarios
+for(i in 1:length(scenarios_corona)){
+    cases[,which(colnames(X) == "Corona"),i] <- scenarios_corona[i]
+}
+
+# interaction
+
+for(i in 1:length(scenarios_corona)){
+    cases[,which(colnames(X) == "HealthCorona"),i] <- cases[,which(colnames(X) == "Health"),i] * scenarios_corona[i]
+}
+
+df1 <- cases[,,1] # No corona
+df2 <- cases[,,2] # corona
+
+
+ev_corona <- matrix(NA, nrow = 1000, ncol = length(scenarios_corona))
+
+
+for(i in 1:length(scenarios_corona)){
+  ev_corona[,i] <- sim_function(
+    coefs = coefs,
+    vcov = vcov,
+    response_function = response_function,
+    stochastic_component = stochastic_component,
+    scenario = cases[,,i],
+    predicted_values = F
+  )$ev
+}
+
+df_fd <- data.frame(First_diff = ev_corona[,2] - ev_corona[,1])
+
+ggplot(data = df_fd,aes(x = First_diff))+
+  geom_histogram()+
+  geom_vline(xintercept = quantile(df_fd$First_diff,c(0.025, 0.975)))
+
+
+
+fd_corona_mean <- mean(df_fd)
+fd_corona_ci <- t(quantile(df_fd,c(0.025, 0.975)))
+
+df_fd <- data.frame(
+  mean = fd_corona_mean,
+  lower = fd_corona_ci[,1],
+  upper = fd_corona_ci[,2],
+  scenario = c("Before Corona","After Corona")
+)
+
+ggplot(data = df_corona)+
+  geom_errorbar(aes(x = scenario, y = mean, ymin = lower, ymax = upper))
+
+>>>>>>> Stashed changes
