@@ -1,6 +1,7 @@
 library(tidyverse)
 library(lubridate)
 library(rstudioapi)
+library(manifestoR)
 
 wd <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
@@ -11,7 +12,6 @@ df <- read.csv2("corona_bt_134.csv")[,-1]
 # Goal: have an assessment of how often opposition parties voted with the government in proposals.
 
 # 1 aggregate votes to the party level for each vote
-
 
 df_party <- df %>%
   group_by(Name, Date, Fraktion, Policy_areas) %>%

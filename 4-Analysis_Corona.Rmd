@@ -1,27 +1,62 @@
-library(tidyverse)
-library(lubridate)
-library(texreg)
-library(optimx)
-library(MASS)
-library(rstudioapi)
+---
+title: "Analysing legislative behaviour before and after March 2020"
+author: "Mio Hienstorfer-Heitmann"
+date: "29 1 2021"
+output: html_document
+---
 
-wd <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      include = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
 
-setwd(wd)
+## R Markdown
+
+```{r packages, include =FALSE}
+
+p_needed <- c("knitr","tidyverse","texreg","optimx","MASS")
+packages <- rownames(installed.packages())
+p_to_install <- p_needed[!(p_needed %in% packages)]
+if (length(p_to_install) > 0) {
+  install.packages(p_to_install)
+}
+lapply(p_needed, require, character.only = TRUE)
+
+
+```
+
+
+```{r load and process data}
+
+
 
 df <- read_csv2("Dataframe_opp_corona.csv")
 
 
+# Only analyse opposition parties
 df_opposition <- df %>% 
   filter(Opposition == 1) %>%
-  filter(Fraktion %in% c("FDP","CDU/CSU","AfD","DIE GRÜNEN","DIE LINKE","SPD")) %>%
+  filter(Fraktion %in% c("FDP","CDU/CSU","AfD","DIE GRÃœNEN","DIE LINKE","SPD")) %>%
   mutate(Health = as.numeric(Health),
          Corona_leg = ifelse(grepl("[Cc]orona", Name),1,0),
          AfD = ifelse(Fraktion == "AfD",1,0))
   
   
+```
 
 
+
+```{r descriptive statistics}
+
+
+
+
+```
+
+
+```{r logit model}
 
 ll_logit <- function(theta, y, X) {
   # theta consists merely of beta (dim is ncol(X))
@@ -261,3 +296,16 @@ ggplot(data = df_corona, aes(x = Rile_Dist, color = Corona))+
   ylab("P(Voting with Gov.)")+
   xlab("Left-Right Distance to Coalition")+
   theme_bw()
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
