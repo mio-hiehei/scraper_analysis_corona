@@ -6,7 +6,8 @@
  
  The file "2-recode.R" processes the extracted data. The file "3-analysis.R" manually conducts a logit regression model to explain the decision of opposition parties to vote with or against the government in bills as a function of their ideological distance, their seat share as well as the time period (pre or post corona).
  
- The purpose of this data collection process and analysis is not to conduct a solid analysis, but to illustrate my skills in data collection.
+ The file "3-analysis.R" applies a logistic regression model and simulates the effect of the Corona pandemic on the behaviour of German opposition parties in the Bundestag.
+ 
 =======
  
 >>>>>>> Stashed changes
